@@ -1,38 +1,36 @@
-from bottle import route, run, Bottle, template, request, get, post
-from bottle import static_file,error
+from bottle import route, request, response, template, run, error
 
-app = Bottle()
-
-@route('/')
-@route('/hello/<name>')
-def greeting():
-    return template('Hello {{name}}, how are you?')
-
-@get('/login')
+@route('/login')
 def login():
     return '''
-    <form action="/login" method="post">
-        Username: <input name="username" type="text"/>
-        Password: <input name="password" type="password"/>
-    <input value="Login" type="submit"/>
-    </form>
+        <form action="/login" method="post">
+            Username: <input name="username" type="text" />
+            Password: <input name="password" type="password" />
+            <input value="Login" type="submit" />
+        </form>
     '''
 
-@post('/login')
+#unhashed login
+@route('/login', method='POST')
 def do_login():
     username = request.forms.get('username')
     password = request.forms.get('password')
+    print(username, password)
     if check_login(username, password):
-        return "<p>Your login information is valid.</p>"
+        response.set_cookie("account", username, secret='some-secret-key')
+        return "<p>Your login information was correct.</p>"
     else:
-        return "<p>Login fail.</p>"
+        return "<p>Login failed.</p>"
+
+# we need a data structure to store login information
+def check_login(username,pwd):
+    if username == 'hi' and pwd == '123':
+        return True
+    else:
+        return False
 
 @error(404)
 def error404(error):
     return 'Nothing here, sorry'
 
-# @route('/static/<filename>')
-# def server_static(filename):
-#     return static_file(filename, root='')
-#
 run(host='localhost', port=8080, debug=True)
