@@ -29,7 +29,9 @@ class FrameEngine:
         return  template
 
     def render(this, template, **kwargs):
-        keys = this.global_renders.copy() #Not the best way to do this, but backwards compatible from PEP448, in Python 3.5+ use keys = {**this.global_renters, **kwargs}
+        keys = this.global_renders.copy()
+        #Not the best way to do this
+        # but backwards compatible from PEP448, in Python 3.5+ use keys = {**this.global_renters, **kwargs}
         keys.update(kwargs)
         template = this.simple_render(template, **keys)
         return template
