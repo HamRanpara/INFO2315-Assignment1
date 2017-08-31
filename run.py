@@ -46,15 +46,15 @@ class FrameEngine:
 # Allow image loading
 @route('/img/<picture>')
 def serve_pictures(picture):
-    return static_file(picture, root='img/')
+    return static_file(picture, root='src/')
 
 # Allow CSS
-@route('/css/<css>')
+@route('static/css/<css>')
 def serve_css(css):
     return static_file(css, root='css/')
 
 # Allow javascript
-@route('/js/<js>')
+@route('static/js/<js>')
 def serve_js(js):
     return static_file(js, root='js/')
 
