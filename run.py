@@ -49,14 +49,14 @@ def serve_pictures(picture):
     return static_file(picture, root='src/')
 
 # Allow CSS
-@route('static/css/<css>')
+@route('css/<css>')
 def serve_css(css):
-    return static_file(css, root='css/')
+    return static_file(css, root='static/css/')
 
 # Allow javascript
-@route('static/js/<js>')
+@route('js/<js>')
 def serve_js(js):
-    return static_file(js, root='js/')
+    return static_file(js, root='static/js/')
 
 #-----------------------------------------------------------------------------
 
