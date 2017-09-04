@@ -3,6 +3,7 @@ from Crypto.Hash import MD5
 import re
 import string
 import numpy as np
+import json
 
 #-----------------------------------------------------------------------------
 # This class loads html files from the "template" directory and formats them using Python.
@@ -52,12 +53,12 @@ def serve_pictures(picture):
     return static_file(picture, root='src/')
 
 # Allow CSS
-@route('css/<css>')
+@route('/css/<css>')
 def serve_css(css):
     return static_file(css, root='static/css/')
 
 # Allow javascript
-@route('js/<js>')
+@route('/js/<js>')
 def serve_js(js):
     return static_file(js, root='static/js/')
 
