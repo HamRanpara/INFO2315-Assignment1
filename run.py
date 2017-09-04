@@ -4,6 +4,7 @@ import re
 import string
 import numpy as np
 import json
+import os
 
 #-----------------------------------------------------------------------------
 # This class loads html files from the "template" directory and formats them using Python.
@@ -199,15 +200,31 @@ def do_register():
     # Display a success message
     return fEngine.load_and_render("valid", flag=msg)
 
-@get('/about')
-def about():
-    garble = ["leverage agile frameworks to provide a robust synopsis for high level overviews.",
-    "iterate approaches to corporate strategy and foster collaborative thinking to further the overall value proposition.",
-    "organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.",
-    "bring to the table win-win survival strategies to ensure proactive domination.",
-    "ensure the end of the day advancement, a new normal that has evolved from generation X and is on the runway heading towards a streamlined cloud solution.",
-    "provide user generated content in real-time will have multiple touchpoints for offshoring."]
-    return fEngine.load_and_render("about", garble=np.random.choice(garble))
+@get('/view/<user>')
+def view(user):
+    try:
+        file_url = "fake_database/"+user+"/file.txt"
+        user_file = open(file_url,'r').readline()
+    except IOError:
+        user_file = "Nothing to display"
+    return fEngine.load_and_render("view_file",user_id=user,user_info=user_file)
+
+@post('/view/<user>')
+def upload(user):
+    info = request.forms.get('information')
+    print(info)
+    try:
+        file_url = "fake_database/" + user
+        if not os.path.exists(file_url):
+            os.makedirs(file_url)
+        path = "fake_database/" + user + "/file.txt"
+        user_file = open(path, "a+")
+        user_file.write(info)
+        user_file.close()
+        info = open(path,'r').readline()
+    except IOError:
+        return fEngine.load_and_render("view_file", user_id=user, user_info="Error writing into file")
+    return fEngine.load_and_render("view_file",user_id=user,user_info=info)
 
 #-----------------------------------------------------------------------------
 
